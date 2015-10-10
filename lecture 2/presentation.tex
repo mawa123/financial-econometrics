@@ -51,6 +51,74 @@
 		\end{alert}
 	\end{frame}
 	
+	\begin{frame}{Ceny instrumentów finansowych}
+		\begin{block}{\textbf{Hipoteza}}
+			Cena instrumentu finansowego $p_t$ jest błądzeniem losowym.
+		\end{block}
+		Rozważmy model \[
+			p_t = \alpha + \rho p_{t-1} + \epsilon_t.
+		\]
+		Prawdziwość powyższej hipotezy jest równoznaczna z tym, że:
+		\begin{itemize}
+			\item $\hat{\rho}$ statystycznie nie różni się od jedności,
+			\item $\epsilon_t$ jest białym szumem.
+		\end{itemize}
+		Ponadto, jeżeli na zadanym poziomie istotności zachodzi:
+		\begin{itemize}
+			\item $\hat{\alpha} = 0,$ to $p_t$ jest błądzeniem losowym bez dryfu,
+			\item $\hat{\alpha} \neq 0,$ to $p_t$ jest błądzeniem losowym z dryfem.
+		\end{itemize}
+		\begin{alert}{\textbf{Uwaga.}}
+			Z powodu możliwej niestacjonarności $p_t$ estymacja powyższego równania
+			jest problematyczna.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Właściwości błądzenia losowego}
+		\begin{columns}[onlytextwidth]
+			\begin{column}{0.5\textwidth}
+				\textbf{Błądzenie losowe bez dryftu} \[
+					p_t = p_{t-1} + \epsilon_t,
+				\] \[
+					p_t = p_0 + \sum_{h=0}^{t} \epsilon_{t-h},
+				\] \[
+					\mathbb{E}\left(p_t\right) = p_0,
+				\] \[
+					\mbox{Var}\left(p_t\right) = t \sigma^2_{\epsilon_t}.
+				\]
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\textbf{Błądzenie losowe z dryftem} \[
+					p_t = \alpha + p_{t-1} + \epsilon_t,
+				\] \[
+					p_t = p_0 + t \alpha + \sum_{h=0}^{t} \epsilon_{t-h},
+				\] \[
+					\mathbb{E}\left(p_t\right) = p_0 + t \alpha,
+				\] \[
+					\mbox{Var}\left(p_t\right) = t \sigma^2_{\epsilon_t}.
+				\]
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Stopy zwrotu instrumentów finansowych}
+		Rozważmy model błądzenia losowego bez dryftu dla logarytmu cen pewnego instrumentu finansowego \[
+			\log\left(p_t\right) = \log\left(p_{t-1}\right) + \epsilon_t.
+		\] Model ten przekształcić możemy do postaci \[
+			r_t = \log\left(\frac{p_t}{p_{t-1}}\right) = \epsilon_t.
+		\]
+		\begin{alert}{\textbf{Uwaga.}}
+			Badanie czy logarytm cen $p_t$ instrumentu finansowego jest błądzeniem losowym
+			sprowadza się do ustalenia, czy logarytmiczne stopy zwrotu $r_t$ tego instrumentu są białym szumem.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Krytyka}
+		Optymalna prognoza ceny instrumentu finansowego na okres przyszły, to przyjęcie ceny tego instrumentu z okresu bieżącego.
+		\\~\\
+		Nie uwzględnia się rentowności zależnej od ryzyka.
+	\end{frame}
+	
 	\section{Modele ARMA}
 
 	\begin{frame}{Proces MA}
@@ -60,8 +128,11 @@
 		\begin{block}{\textbf{Proces MA}}
 			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem MA (średniej ruchomej) rzędu $q,$ jeżeli spełnia on równanie \[
 				X_t = \theta\left(B\right) \epsilon_{t},
-			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$ Proces MA rzędu $q$ oznaczać będziemy symbolem $\mbox{MA}\left(q\right)$.
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$
 		\end{block}
+		\begin{alert}{\textbf{Oznaczenie.}}
+			Proces MA rzędu $q$ oznacza się symbolem $\mbox{MA}\left(q\right).$
+		\end{alert}
 	\end{frame}
 	
 	\begin{frame}{Proces AR}
@@ -71,8 +142,11 @@
 		\begin{block}{\textbf{Proces AR}}
 			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem AR (autoregresyjnym) rzędu $p,$ jeżeli spełnia on równanie \[
 				\varphi\left(B\right) X_t = \epsilon_{t},
-			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$ Proces AR rzędu $p$ oznaczać będziemy symbolem $\mbox{AR}\left(p\right)$.
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$
 		\end{block}
+		\begin{alert}{\textbf{Oznaczenie.}}
+			Proces AR rzędu $p$ oznacza się symbolem $\mbox{AR}\left(p\right).$
+		\end{alert}
 	\end{frame}
 	
 	\begin{frame}{Proces ARMA}
