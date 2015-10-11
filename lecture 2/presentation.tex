@@ -121,6 +121,20 @@
 	
 	\section{Modele ARMA}
 
+	\begin{frame}{Proces AR}
+		Zdefiniujmy operator \[
+			\varphi\left(B\right) = I - \varphi_{1} B - \ldots - \varphi_{p} B^{p},
+		\] gdzie $p \in \mathbb{Z}_{+}.$
+		\begin{block}{\textbf{Proces AR}}
+			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem AR (autoregresyjnym) rzędu $p,$ jeżeli spełnia on równanie \[
+				\varphi\left(B\right) X_t = \epsilon_{t},
+			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$
+		\end{block}
+		\begin{alert}{\textbf{Oznaczenie.}}
+			Proces AR rzędu $p$ oznacza się symbolem $\mbox{AR}\left(p\right).$
+		\end{alert}
+	\end{frame}
+
 	\begin{frame}{Proces MA}
 		Zdefiniujmy operator \[
 			\theta\left(B\right) = I + \theta_{1} B + \ldots +\theta_{q} B^{q},
@@ -135,21 +149,8 @@
 		\end{alert}
 	\end{frame}
 	
-	\begin{frame}{Proces AR}
-		Zdefiniujmy operator \[
-			\varphi\left(B\right) = I - \varphi_{1} B - \ldots - \varphi_{p} B^{p},
-		\] gdzie $p \in \mathbb{Z}_{+}.$
-		\begin{block}{\textbf{Proces AR}}
-			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem AR (autoregresyjnym) rzędu $p,$ jeżeli spełnia on równanie \[
-				\varphi\left(B\right) X_t = \epsilon_{t},
-			\] gdzie $\epsilon_{t} \sim \mbox{WN}\left(0, \sigma^2\right).$
-		\end{block}
-		\begin{alert}{\textbf{Oznaczenie.}}
-			Proces AR rzędu $p$ oznacza się symbolem $\mbox{AR}\left(p\right).$
-		\end{alert}
-	\end{frame}
-	
 	\begin{frame}{Proces ARMA}
+		\framesubtitle{Definicja}
 		\begin{block}{\textbf{Proces ARMA}}
 			Słabo stacjonarny szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARMA}\left(p, q\right),$ jeżeli spełnia on równanie \[
 				\varphi\left(B\right) X_t = \theta\left(B\right) \epsilon_{t},
@@ -157,34 +158,194 @@
 		\end{block}
 	\end{frame}
 	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Estymowanie funkcji autokorelacji (ACF)}
+		\begin{block}{\textbf{Estymator funkcji autokorelacji}}
+			Jako estymator funkcji autokorelacji procesu $X_t$ możemy przyjąć \[
+				\hat{\rho}_h = \frac{\sum_{t=h}^{T}\left(X_t - \overline{X}\right)\left(X_{t-h} - \overline{X}\right)}{\sum_{t=1}^{T}\left(X_t - \overline{X}\right)^2}
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Estymowanie funkcji autokorelacji częściowej (PACF)}
+		\begin{block}{\textbf{Estymator funkcji autokorelacji częściowej}}
+			Jako estymator funkcji autokorelacji częściowej procesu $X_t$ możemy przyjąć \begin{eqnarray*}
+				\alpha_{0} & = & 1,\\
+				\alpha_{1} & = & \phi_{1,1} = \hat{\rho}_1,\\
+				\alpha_{h} & = & \phi_{h,h} = \frac{
+					\hat{\rho}_h - \sum_{j=1}^{h-1} \phi_{h-1,j}{\hat{\rho}_{h-j}}
+				}{
+					1 - \sum_{j=1}^{h-1} \phi_{h-1,j} \hat{\rho}_j
+				}, h = 2, 3, \ldots,
+			\end{eqnarray*} gdzie $\phi_{i,j}$ to rozwiązania układu Yule'a-Walkera.
+		\end{block}
+		\begin{alert}{\textbf{Intuicja.}}
+			Współczynnik autokorelacji częściowej mierzy korelację między zmiennymi
+			$X_t$ oraz $X_{t-h}$ po eliminacji wpływu zmiennych pośrednich.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Identyfikacja na podstawie ACF oraz PACF}
+		\begin{itemize}
+			\item Jeżeli proces jest typu $\mbox{AR}\left(p\right),$ to funkcja
+				autokorelacji powoli maleje, natomiast funkcja autokorelacji częściowej
+				staje się statystycznie równa zero od wartości $p + 1.$
+			\item Jeżeli proces jest typu $\mbox{MA}\left(q\right),$ to funkcja
+				autokorelacji staje się statystycznie równa zero od wartości $q + 1,$
+				natomiast funkcja autokorelacji częściowej powoli maleje.
+			\item Jeżeli proces jest typu $\mbox{ARMA}\left(p,q\right),$ to funkcja
+				autokorelacji oraz funkcja autokorelacji częściowej łagodnie zanikają.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Identyfikacja na podstawie kryteriów informacyjnych}
+		\begin{block}{\textbf{Idea}}
+			Należy oszacować modele $\mbox{ARMA}\left(p,q\right)$ dla wszystkich możliwych
+			kombinacji parametrów $p=1,2,\ldots,P$ oraz $q=1,2,\ldots,Q,$ a następnie obliczyć
+			dla nich wartości wybranego kryterium informacyjnego. Minimalna wartość kryterium
+			wyznacza optymalną parę parametrów $p$ i $q.$
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Kryteria informacyjne}
+		Niech $L_{p,q}$ oznacza wiarogoność modelu $\mbox{ARMA}\left(p, q\right).$
+		\begin{block}{\textbf{Kryterium informacyjne Akaike (AIC)}}
+			\[
+				\mbox{AIC}_{p,q} = -2\ln L_{p,q} + 2\left(p + q + 1\right)
+			\]
+		\end{block}
+		\begin{block}{\textbf{Bayesowskie kryterium informacyjne (BIC)}}
+			\[
+				\mbox{BIC}_{p,q} = -2\ln L_{p,q} + \left(p + q + 1\right) \ln T
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Podział metod estymacji}
+		\textbf{Metody estymacji:}
+		\begin{itemize}
+			\item Metody estymacji parametrów modelu $\mbox{AR}\left(p\right):$
+			\begin{itemize}
+				\item równania Yule'a-Walkera,
+				\item metoda najmniejszych kwadratów,
+				\item metoda największej wiarogodności.
+			\end{itemize}
+			\item Metody estymacji parametrów modelu $\mbox{ARMA}\left(p,q\right):$
+			\begin{itemize}
+				\item metoda największej wiarogodności.
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Idea metod estymacji}
+		\begin{block}{\textbf{Równania Yule'a-Walkera}}
+			Równania Yule'a-Walkera to liniowy układ równań pozwalający na wyrażenie
+			parametrów autoregresji za pomocą współczynników autokorelacji. Oszacowania
+			parametrów modelu AR(p) otrzymujemy zastępując we wspomnianym układzie
+			współczynniki autokorelacji ich estymatorami, a następnie rozwiązując układ.
+		\end{block}
+		\begin{block}{\textbf{Metoda najmniejszych kwadratów}}
+			Wykorzystanie klasycznej MNK do stacjonarnego szeregu czasowego typu AR(p).
+			Uzysane w ten sposób estymatory będą zgodne z estymatorami metody największej
+			wiarogodności.
+		\end{block}
+		\begin{block}{\textbf{Metoda największej wiarogodności}}
+			Metoda polegająca na maksymalizacji funkcji największej wiarogodności procesu
+			$\mbox{ARMA}\left(p,q\right).$
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Proces ARMA}
+		\framesubtitle{Prognoza}
+		Interesuje nas prognoza na $h$ okresów w przód: \[
+			X_{t+h} = \sum_{k=1}^{p} \rho_{k} X_{t+h-k} + \sum_{k=0}^{q} \theta_{k} \epsilon_{t-k},
+		\] gdzie $\theta_0 = 0.$
+		\\~\\
+		Możemy wyrazić ją jako warunkową wartość oczekiwaną: \begin{eqnarray*}
+			\hat{X}_t\left(h\right) & = & \mathbb{E}\left(X_{t+h} \mid X_t, X_{t-1}, \ldots\right),\\
+			\mathbb{E}\left(X_{t+j} \mid X_t, X_{t-1}, \ldots\right) & = & \begin{cases}
+				X_{t+j}, & j \leq 0,\\
+				\hat{X}_t\left(j\right), & j > 0,
+			\end{cases}\\
+			\mathbb{E}\left(\epsilon_{t+j} \mid \epsilon_t, \epsilon_{t-1}, \ldots\right) & = & \begin{cases}
+				\epsilon_{t+j}, & j \leq 0,\\
+				0, & j > 0.
+			\end{cases}
+		\end{eqnarray*}
+	\end{frame}
+	
 	\begin{frame}{Proces ARIMA}
 		\begin{block}{\textbf{Proces ARIMA}}
 			Szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARIMA}\left(p, d, q\right),$ jeżeli
 			szereg czasowy $\Delta^{d} X_t$ jest procesem $\mbox{ARMA}\left(p, q\right).$
 		\end{block}
-		Bezpośrednio z powyższej definicji wynika, że proces $\mbox{ARIMA}\left(p, d, q\right)$ charakteryzuje następujące równanie: \[
-			\varphi\left(B\right)\left(\Delta^{d} X_{t}\right) = \theta\left(B\right) \epsilon_{t}.
-		\]
-	\end{frame}
-	
-	\begin{frame}{Proces SARIMA}
-		\begin{block}{\textbf{Proces ARIMA}}
-			Szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARIMA}\left(p, d, q\right),$ jeżeli
-			szereg czasowy $\Delta^{d} X_t$ jest procesem $\mbox{ARMA}\left(p, q\right).$
-		\end{block}
-		Bezpośrednio z powyższej definicji wynika, że proces $\mbox{ARIMA}\left(p, d, q\right)$ charakteryzuje następujące równanie: \[
+		Z powyższej definicji wynika, że proces $\mbox{ARIMA}\left(p, d, q\right)$ jest opisywany przez następujące równanie: \[
 			\varphi\left(B\right)\left(\Delta^{d} X_{t}\right) = \theta\left(B\right) \epsilon_{t}.
 		\]
 	\end{frame}
 	
 	\begin{frame}{Multiplikatywny proces ARMA}
-		\begin{block}{\textbf{Proces ARIMA}}
-			Szereg czasowy $X_t$ nazwiemy procesem $\mbox{ARIMA}\left(p, d, q\right),$ jeżeli
-			szereg czasowy $\Delta^{d} X_t$ jest procesem $\mbox{ARMA}\left(p, q\right).$
-		\end{block}
-		Bezpośrednio z powyższej definicji wynika, że proces $\mbox{ARIMA}\left(p, d, q\right)$ charakteryzuje następujące równanie: \[
-			\varphi\left(B\right)\left(\Delta^{d} X_{t}\right) = \theta\left(B\right) \epsilon_{t}.
+		\framesubtitle{Intuicja}
+		Niech proces $X_t$ charakteryzuje równanie \[
+			\varphi_X\left(B\right) X_t = \theta_X\left(B\right) \epsilon_t,
+		\] natomiast proces $\epsilon_t$ równanie \[
+			\varphi_{\epsilon}\left(B\right) \epsilon_t = \theta_{\epsilon}\left(B\right) \eta_t,
+		\] gdzie $\eta_t \sim \mbox{WN}\left(0, \sigma^2\right).$
+		Składając powyższe równania uzyskujemy \[
+			\varphi_{\epsilon}\left(B\right) \varphi_X\left(B\right) X_t = \theta_X\left(B\right) \theta_{\epsilon}\left(B\right) \eta_t.
 		\]
+		\begin{alert}{\textbf{Uwaga.}}
+			Powyższe złożenie dwóch procesów ARMA pozostaje nadal procesem ARMA.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Multiplikatywny proces ARMA}
+		\framesubtitle{Definicja}
+		\begin{block}{\textbf{Multiplikatywny proces ARMA}}
+			Szereg czasowy $X_t$ nazwiemy multiplikatywnym procesem
+			$\mbox{ARMA}\left(p, q\right)\times\left(P,Q\right)_s,$ jeżeli
+			spełnia on równanie \[
+				\Phi\left(B^s\right) X_t = \Theta\left(B^s\right) \epsilon_t,
+			\] gdzie
+			\begin{itemize}
+				\item $\Phi$ --- operator analogiczny do $\varphi$ rzędu $P,$
+				\item $\Theta$ --- operator analogiczny do $\theta$ rzędu $Q,$
+				\item $\epsilon_t$ --- proces $\mbox{ARMA}\left(p,q\right).$
+			\end{itemize}
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Multiplikatywny proces ARMA}
+		\framesubtitle{Właściwości}
+		\begin{alert}{\textbf{Reprezentacja.}}
+			Proces $\mbox{ARMA}\left(p, q\right)\times\left(P,Q\right)_s$ jest
+			specyficznym przypadkiem procesu $\mbox{ARMA}\left(p+sP,q+sQ\right).$
+		\end{alert}
+		\\~\\
+		\begin{alert}{\textbf{Estymacja.}}
+			Estymacja parametrów multiplikatywnych procesów ARMA odbywa się przez osobną
+			estymację parametrów każdego z procesów ARMA wchodzących w jego skład.
+		\end{alert}
+	\end{frame}
+	
+	\begin{frame}{Sezonowy proces ARIMA}
+		\begin{block}{\textbf{Sezonowy proces ARIMA}}
+			Szereg czasowy $X_t$ nazwiemy sezonowym procesem
+			$\mbox{ARIMA}\left(p, d, q\right)\times\left(P,D,Q\right)_s,$
+			jeżeli spełnia on równanie \[
+				\Phi\left(B^s\right) \phi\left(B\right) \Delta_s^D \Delta^d X_t = \Theta\left(B^s\right) \theta\left(B\right) \epsilon_t,
+			\] gdzie
+			\begin{itemize}
+				\item $\epsilon_t$ --- biały szum,
+				\item $\Delta_s^D \Delta^d X_t$ --- proces stacjonarny.
+			\end{itemize}
+		\end{block}
 	\end{frame}
 	
 	\section{Modele GARCH}
